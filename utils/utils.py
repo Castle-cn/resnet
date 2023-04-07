@@ -1,7 +1,8 @@
+import torch
+from torch import nn
 from utils import dataset
 from torchvision import transforms
 from torch.utils.data import DataLoader
-
 
 def get_loader(args):
     if args.dataset == 'mnist':
@@ -28,3 +29,20 @@ def get_loader(args):
                              pin_memory=True)
 
     return train_loader, test_loader
+
+def get_optim(args, model):
+    if args.optim == 'sgd':
+        return torch.optim.SGD(model.parameters(), lr=args.lr)
+    elif args.optim == 'adam':
+        return torch.optim.Adam(model.parameters(), lr=args.lr)
+    else:
+        raise Exception(f"there is no such optimizer named {args.optim}")
+
+
+def get_loss_fn(args):
+    if args.loss_fn == 'crossentropy':
+        return nn.CrossEntropyLoss()
+    elif args.loss_fn == 'mse':
+        return nn.MSELoss()
+    else:
+        raise Exception(f"there is no such loss function named {args.loss_fn}")

@@ -1,7 +1,7 @@
 import os
 from utils.args import get_args
 from utils.setup import setup
-from utils.data_utils import get_loader
+from utils.utils import get_loader
 from torch import nn
 import torch
 from tqdm import tqdm
@@ -9,8 +9,6 @@ from tqdm import tqdm
 
 class Model():
     def __init__(self, args):
-        self.train_loader, self.test_loader = get_loader(args)
-        print('data has been loaded over!')
 
         if torch.cuda.is_available():
             self.device = 'cuda'
@@ -19,8 +17,11 @@ class Model():
         else:
             self.device = 'cpu'
 
+        self.train_loader, self.test_loader = get_loader(args)
+        print('data has been loaded over!')
+
         self.model = setup(args).to(self.device)
-        self.lr = args.lr
+        # self.lr = args.lr
         self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self.lr)
         self.epochs = args.epoch
         self.loss_fn = nn.CrossEntropyLoss()

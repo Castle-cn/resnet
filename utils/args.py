@@ -40,6 +40,14 @@ def get_args():
     parser.add_argument("--save_model_path",
                         type=str,
                         default='./model')
+    parser.add_argument("--optim",
+                        choices=['sgd','adam'],
+                        type=str,
+                        default='sgd')
+    parser.add_argument("--loss_fn",
+                        choices=['crossentropy','mse'],
+                        type=str,
+                        default='crossentropy')
 
     args = parser.parse_args()
 
